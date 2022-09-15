@@ -1,52 +1,48 @@
-from tkinter import *
-import mysql.connector
-import tkinter.messagebox
+from Authenthication import *
 
 
-db = mysql.connector.connect(
-    host='localhost',
-    username='root',
-    password='rahul125',
-    database='Shiash_Assessment'
-)
-curser = db.cursor(buffered=True)
-
-
-def main():
+def mains():
+    global dis
     dis = Tk()
-
-    dis.geometry('810x650')
+    dis.title('Assessment MarkEntry')
+    width = 810
+    height = 650
+    screen_width = dis.winfo_screenwidth()
+    screen_height = dis.winfo_screenheight()
+    x = (width)-(screen_width/4)
+    y = (height)-(screen_height/1.6)
+    dis.geometry(f'{width}x{height}+{int(x)}+{int(y)}')
     dis.configure(bg='black')
-    dis.title('Assessment Mark Entry')
-    Label(text='', bg='black').grid(row=0, column=3)
 
-    Label(text='            Shiash Info Solutions Private Limited', bg='black', fg='white', font='Roboto 24 bold'
+    Label(dis, text='', bg='black').grid(row=0, column=3)
+
+    Label(dis, text='            Shiash Info Solutions Private Limited', bg='black', fg='white', font='Roboto 24 bold'
           ).grid(row=1, columnspan=4, )
-    Label(text='', bg='black').grid(row=2, column=3)
-    Label(text='     Assessment Mark Entry', bg='black',
+    Label(dis, text='', bg='black').grid(row=2, column=3)
+    Label(dis, text='     Assessment MarkEntry', bg='black',
           fg='white', font='Roboto 18 bold').grid(row=3, column=2)
-    Label(text='', bg='black').grid(row=4, column=3)
-    Label(text='Intern Id', font='Roboto 13 bold', bg='black',
+    Label(dis, text='', bg='black').grid(row=4, column=3)
+    Label(dis, text='Intern Id', font='Roboto 13 bold', bg='black',
           fg='white').grid(row=5, column=1, sticky='w')
-    Label(text='', bg='black').grid(row=6, column=3)
-    Label(text='Intern Name', font='Roboto 13 bold', bg='black',
+    Label(dis, text='', bg='black').grid(row=6, column=3)
+    Label(dis, text='Intern Name', font='Roboto 13 bold', bg='black',
           fg='white').grid(row=7, column=1, sticky='w')
-    Label(text='', bg='black').grid(row=8, column=3)
-    Label(text='Assessment - I', font='Roboto 13 bold',
+    Label(dis, text='', bg='black').grid(row=8, column=3)
+    Label(dis, text='Assessment - I', font='Roboto 13 bold',
           bg='black', fg='white').grid(row=9, column=1, sticky='w')
-    Label(text='', bg='black').grid(row=10, column=3)
-    Label(text='Assessment - II', font='Roboto 13 bold',
+    Label(dis, text='', bg='black').grid(row=10, column=3)
+    Label(dis, text='Assessment - II', font='Roboto 13 bold',
           bg='black', fg='white').grid(row=11, column=1, sticky='w')
-    Label(text='', bg='black').grid(row=12, column=3)
-    Label(text='Assessment - III', font='Roboto 13 bold',
+    Label(dis, text='', bg='black').grid(row=12, column=3)
+    Label(dis, text='Assessment - III', font='Roboto 13 bold',
           bg='black', fg='white').grid(row=13, column=1, sticky='w')
-    Label(text='', bg='black').grid(row=14, column=3)
-    Label(text='Total', font='Roboto 13 bold', bg='black',
+    Label(dis, text='', bg='black').grid(row=14, column=3)
+    Label(dis, text='Total', font='Roboto 13 bold', bg='black',
           fg='white').grid(row=15, column=1, sticky='w')
-    Label(text='', bg='black').grid(row=16, column=3)
-    Label(text='Percentage', font='Roboto 13 bold', bg='black',
+    Label(dis, text='', bg='black').grid(row=16, column=3)
+    Label(dis, text='Percentage', font='Roboto 13 bold', bg='black',
           fg='white').grid(row=17, column=1, sticky='w')
-    global inter_id
+    global intern_id
     global intern_name
     global intern_ass1
     global intern_ass2
@@ -54,57 +50,74 @@ def main():
     global intern_total
     global intern_per
     intern_id = StringVar()
-    Entry(dis, textvariable=intern_id, font='Roboto 13 bold').grid(
-        row=5, column=2, sticky='w')
     intern_name = StringVar()
-    Entry(dis, textvariable=intern_name, font='Roboto 13 bold').grid(
-        row=7, column=2, sticky='w')
     intern_ass1 = IntVar()
-    Entry(dis, textvariable=intern_ass1, font='Roboto 13 bold').grid(
-        row=9, column=2, sticky='w')
     intern_ass2 = IntVar()
-    Entry(dis, textvariable=intern_ass2, font='Roboto 13 bold').grid(
-        row=11, column=2, sticky='w')
     intern_ass3 = IntVar()
-    Entry(dis, textvariable=intern_ass3, font='Roboto 13 bold').grid(
-        row=13, column=2, sticky='w')
     intern_total = IntVar()
-    Entry(dis, textvariable=intern_total, font='Roboto 13 bold').grid(
-        row=15, column=2, sticky='w')
     intern_per = IntVar()
-    Entry(dis, textvariable=intern_per, font='Roboto 13 bold').grid(
+
+    intern_id1 = Entry(dis, textvariable=intern_id,   font='Roboto 13 bold')
+    intern_id1.grid(
+        row=5, column=2, sticky='w')
+
+    intern_name1 = Entry(dis, textvariable=intern_name, font='Roboto 13 bold')
+    intern_name1.grid(
+        row=7, column=2, sticky='w')
+
+    intern_ass11 = Entry(dis, textvariable=intern_ass1, font='Roboto 13 bold')
+    intern_ass11.grid(
+        row=9, column=2, sticky='w')
+
+    intern_ass21 = Entry(dis,  textvariable=intern_ass2,
+                         font='Roboto 13 bold')
+    intern_ass21.grid(
+        row=11, column=2, sticky='w')
+
+    intern_ass31 = Entry(dis,  textvariable=intern_ass3,
+                         font='Roboto 13 bold')
+    intern_ass31.grid(
+        row=13, column=2, sticky='w')
+
+    intern_total1 = Entry(dis, textvariable=intern_total,
+                          font='Roboto 13 bold')
+    intern_total1.grid(
+        row=15, column=2, sticky='w')
+
+    intern_per1 = Entry(dis, textvariable=intern_per,   font='Roboto 13 bold')
+    intern_per1.grid(
         row=17, column=2, sticky='w')
 
-    Button(text='ADD', command=add, bg='green', font='Roboto 13 bold',
+    Button(dis, text='ADD', command=add, bg='green', font='Roboto 13 bold',
            width=7, height=1).grid(row=5, column=3)
-    Button(text='VIEW', command=view, bg='yellow', font='Roboto 13 bold', width=7, height=1).grid(row=5,
-                                                                                                  column=5)
-    Button(text='UPDATE', command=update, bg='aqua', font='Roboto 13 bold', width=7, height=1).grid(row=7,
-                                                                                                    column=3)
-    Button(text='DELETE', command=delete, bg='red', font='Roboto 13 bold', width=7, height=1).grid(row=7,
-                                                                                                   column=5)
-    Button(text='CLEAR', command=clear, bg='grey',
+    Button(dis, text='VIEW', command=view, bg='yellow', font='Roboto 13 bold', width=7, height=1).grid(row=5,
+                                                                                                       column=5)
+    Button(dis, text='UPDATE', command=update, bg='aqua', font='Roboto 13 bold', width=7, height=1).grid(row=7,
+                                                                                                         column=3)
+    Button(dis, text='DELETE', command=delete, bg='red', font='Roboto 13 bold', width=7, height=1).grid(row=7,
+                                                                                                        column=5)
+    Button(dis, text='CLEAR', command=clear, bg='grey',
            font='Roboto 13 bold', width=7, height=1).grid(row=9, column=3)
-    Button(text='VIEW ALL', command=viewall, bg='Tan',
+    Button(dis, text='VIEW ALL', command=viewall, bg='Tan',
            font='Roboto 13 bold', width=7, height=1).grid(row=9, column=5)
-    Button(text='TOTAL', command=total, bg='Purple', font='Roboto 13 bold', width=7, height=1).grid(row=11,
-                                                                                                    column=3)
-    Button(text='PERCENT', command=percent, bg='pink',
+    Button(dis, text='TOTAL', command=total, bg='Purple', font='Roboto 13 bold', width=7, height=1).grid(row=11,
+                                                                                                         column=3)
+    Button(dis, text='PERCENT', command=percent, bg='pink',
            font='Roboto 12 bold', width=7, height=1).grid(row=11, column=5)
-    Label(text=' ', bg='black', fg='white',
+    Label(dis, text=' ', bg='black', fg='white',
           font='a 10 bold').grid(row=18, columnspan=8)
-    Label(text=' ', bg='black', fg='white',
+    Label(dis, text=' ', bg='black', fg='white',
           font='a 10 bold').grid(row=19, columnspan=8)
-    Label(text=' ', bg='black', fg='white',
+    Label(dis, text=' ', bg='black', fg='white',
           font='a 10 bold').grid(row=20, columnspan=8)
-    Label(text='Developed by RAHUL R  SISPLINT : 329191896', bg='black', fg='white', font='a 15 bold').grid(row=21,
-                                                                                                            columnspan=8)
-    Label(text='DEVELOPER TRAINEE - INTERN', bg='black', fg='white', font='a 15 bold').grid(row=22,
-                                                                                            columnspan=8)
-    mainloop()
+    Label(dis, text='Developed by RAHUL R  SISPLINT : 329191896', bg='black', fg='white', font='a 15 bold').grid(row=21,
+                                                                                                                 columnspan=8)
+    Label(dis, text='DEVELOPER TRAINEE - INTERN', bg='black', fg='white', font='a 15 bold').grid(row=22,
+                                                                                                 columnspan=8)
+
 
 def add():
-    
+
     id = intern_id.get()
     name = intern_name.get()
     ass1 = intern_ass1.get()
@@ -119,6 +132,7 @@ def add():
 
 
 def view():
+
     id = intern_id.get()
     curser.execute('select* from assessment_data where intern_id=%s', [id])
     val = curser.fetchone()
@@ -153,7 +167,7 @@ def delete():
 
 def viewall():
     global mlist
-    mlist = Toplevel(dis)
+    mlist = Tk()
     mlist.title('Assessment Report')
     mlist.configure(bg='black')
     mlist.geometry('1036x600')
@@ -198,6 +212,7 @@ def viewall():
 
 
 def clear():
+
     intern_id.set('')
     intern_name.set('')
     intern_ass1.set('')
@@ -215,8 +230,3 @@ def percent():
     per = intern_total.get() / 300
     perc = per * 100
     intern_per.set(perc)
-
-
-
-
- 

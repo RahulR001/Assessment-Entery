@@ -1,4 +1,5 @@
 from tkinter import *
+import tkinter.messagebox
 import mysql.connector
 from mentor_page import *
 
@@ -8,14 +9,16 @@ db = mysql.connector.connect(
     password='rahul125',
     database='shiash_mentors'
 )
-curser = db.cursor()
+curser = db.cursor(buffered=True)
+
 
 def multifun(*functions):
-    def fun(*args,**kwargs):
+    def fun(*args, **kwargs):
         rtn = None
         for function in functions:
             rtn = function(*args, **kwargs)
     return fun
+
 
 def mainwin():
     global main
@@ -41,7 +44,7 @@ def mainwin():
           bg='black', fg='green', font='Roboto 18 bold').grid(row=4, columnspan=6)
     Label(main, text='', bg='black').grid(row=5, columnspan=3)
     Button(main, text='Admin Login', font=('Helvetica 15 bold '),
-           command=admin, bg='grey', width=12, height=2).place(x=230, y=200)
+           command=admins, bg='grey', width=12, height=2).place(x=230, y=200)
     Button(main, text='Mentor Login', font=('Helvetica 15 bold '),
            command=mentors, bg='grey',
            width=12, height=2).place(x=230, y=300)
@@ -59,10 +62,13 @@ def mentors():
     x = (width)-(screen_width/15)
     y = (height)-(screen_height/3)
     mentor.geometry(f'{width}x{height}+{int(x)}+{int(y)}')
-     
+
     mentor.configure(bg='black')
     main.withdraw()
-
+    global user_name
+    global password
+    user_name = StringVar()
+    password = StringVar()
     Label(mentor, text='', bg='black').grid(row=0, column=3)
 
     Label(mentor, text=' Shiash Info Solutions Private Limited', bg='black', fg='white', font='Roboto 24 bold'
@@ -72,17 +78,35 @@ def mentors():
           fg='white', font='Roboto 22 bold').grid(row=3, columnspan=6)
     Label(mentor, text='Username :', bg='black',
           fg='white', font='Roboto 15 bold').place(x=170, y=150)
-    Entry(mentor, width=15, font='Roboto 22 bold').place(x=170, y=190)
+    Entry(mentor, textvariable=user_name, width=15,
+          font='Roboto 22 bold').place(x=170, y=190)
     Label(mentor, text='Password :', bg='black',
           fg='white', font='Roboto 15 bold').place(x=170, y=250)
-    Entry(mentor, width=15, font='Roboto 22 bold', show='*').place(x=170, y=290)
+    Entry(mentor, textvariable=password, width=15,
+          font='Roboto 22 bold', show='*').place(x=170, y=290)
     Label(mentor, text="Don't have an account create one", bg='black',
           fg='white', font='Roboto 12 bold').place(x=140, y=350)
     Button(mentor, command=mentor_registration, text='here', font='Roboto 12 bold',
            bg='black', fg='blue', border=0).place(x=400, y=350)
-    Button(mentor, text='Login', font=('Helvetica 15 bold '),
-           bg='green', width=10, height=1).place(x=230, y=400)
-     
+    Label(mentor, text="Not a mentor click", bg='black',
+          fg='white', font='Roboto 12 bold').place(x=200, y=380)
+    Button(mentor, command=multifun(mentor.withdraw, mainwin), text='here', font='Roboto 12 bold',
+           bg='black', fg='blue', border=0).place(x=340, y=380)
+    Button(mentor, text='Login', command=multifun(mentor_login, mentor.withdraw), font=('Helvetica 15 bold '),
+           bg='green', width=10, height=1).place(x=230, y=415)
+
+
+def mentor_login():
+    username = user_name.get()
+    password1 = password.get()
+    curser.execute(
+        "select * from mentors where user_name=%s and password1=%s ", [username, password1])
+    val = curser.fetchone()
+    if val != None:
+        tkinter.messagebox.showinfo('mentor', 'Asscess Granted')
+        mains()
+    else:
+        tkinter.messagebox.showinfo('mentor', 'Asscess Denied')
 
 
 def mentor_registration():
@@ -125,7 +149,7 @@ def mentor_registration():
           bg='black', fg='white').grid(row=15, column=1, sticky='w')
     Label(reg, text="Already have an account login", bg='black',
           fg='white', font='Roboto 12 bold').place(x=30, y=420)
-    Button(reg, command=multifun(mentors,reg.withdraw), text='here', font='Roboto 12 bold',
+    Button(reg, command=multifun(mentors, reg.withdraw), text='here', font='Roboto 12 bold',
            bg='black', fg='blue', border=0).place(x=265, y=420)
 
     global first_name
@@ -165,7 +189,6 @@ def register():
     email1 = email.get()
     password11 = password1.get()
     password21 = password2.get()
-
     curser.execute("insert into mentors (first_name,last_name,user_name,email,password1,password2 ) values(%s,%s,%s,%s,%s,%s  )", [
                    first1_name, last1_name, user1_name, email1, password11, password21])
     db.commit()
@@ -179,7 +202,7 @@ def register():
     reg.withdraw()
 
 
-def admin():
+def admins():
     global admin
     admin = Tk()
     admin.title('Admin Login')
@@ -190,7 +213,7 @@ def admin():
     x = (width)-(screen_width/15)
     y = (height)-(screen_height/3)
     admin.geometry(f'{width}x{height}+{int(x)}+{int(y)}')
-     
+
     admin.configure(bg='black')
     main.withdraw()
     Label(admin, text='', bg='black').grid(row=0, column=3)
@@ -206,6 +229,13 @@ def admin():
     Label(admin, text='Password :', bg='black',
           fg='white', font='Roboto 15 bold').place(x=170, y=250)
     Entry(admin, width=15, font='Roboto 22 bold', show='*').place(x=170, y=290)
+    Label(admin, text="Not an admin click", bg='black',
+          fg='white', font='Roboto 12 bold').place(x=170, y=350)
+    Button(admin, command=multifun(admin.withdraw, mainwin), text='here', font='Roboto 12 bold',
+           bg='black', fg='blue', border=0).place(x=320, y=350)
+    Button(admin, text='Login', font=('Helvetica 15 bold '),
+           bg='green', width=10, height=1).place(x=230, y=400)
 
 
-mainwin()
+if __name__ == "__main__":
+    mainwin()
